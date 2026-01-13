@@ -2,7 +2,7 @@ import os
 import sys
 from dataclasses import dataclass
 
-from catboost import CatBoostRegressor
+# from catboost import CatBoostRegressor
 from sklearn.ensemble import (
     AdaBoostRegressor,
     GradientBoostingRegressor,
@@ -41,11 +41,46 @@ class ModelTrainer:
                 "Gradient Boosting" : GradientBoostingRegressor(),
                 "Linear Regression" : LinearRegression(),
                 "XGBoost" : XGBRegressor(),
-                "CatBoost" : CatBoostRegressor(),
+                # "CatBoost" : CatBoostRegressor(),
                 "Adaboost" : AdaBoostRegressor(),
                 "KNeighbors Regressor": KNeighborsRegressor()
             }
-            model_report : dict = evaluate_model(X_train = X_train,Y_train = Y_train,X_test = X_test,Y_test = Y_test,models = models)
+
+            param = {
+            "Random Forest": {
+                "n_estimators": [8,16,32,64,128,256]
+            },
+            "Decision Tree": {
+                "criterion": ['squared_error', 'friedman_mse', 'absolute_error', 'poisson']
+            },
+            "Gradient Boosting": {
+                "learning_rate": [.1, .01, .05, .001],
+                "n_estimators": [8,16,32,64,128,256]
+            },
+            "Linear Regression": {},
+
+            "XGBoost": {   # ✅ FIXED
+                "learning_rate": [.1, .01, .05, .001],
+                "n_estimators": [8,16,32,64,128,256]
+            },
+
+            # "CatBoost": {  # ✅ FIXED
+            #     "depth": [6,8,10],
+            #     "iterations": [30, 50, 100]
+            # },
+
+            "Adaboost": {  # ✅ FIXED
+                "learning_rate": [.1, .01, 0.5, .001],
+                "n_estimators": [8,16,32,64,128,256]
+            },
+
+            "KNeighbors Regressor": {  # ✅ FIXED
+                "n_neighbors": [5,7,9,11]
+            }
+        }
+
+
+            model_report : dict = evaluate_model(X_train = X_train,Y_train = Y_train,X_test = X_test,Y_test = Y_test,models = models, params = param)
             best_model_score = max(sorted(model_report.values()))
 
             best_model_name = list(model_report.keys())[list(model_report.values()).index(best_model_score)]

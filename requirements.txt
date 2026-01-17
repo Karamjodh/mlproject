@@ -8,4 +8,4 @@ ipykernel
 dill
 catboost
 flask
-# -e .
+-e .

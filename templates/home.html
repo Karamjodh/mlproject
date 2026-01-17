@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Predict Score | Student Score Predictor</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --text:#e8eefc;
+      --muted:#a9b6d6;
+      --accent:#4f7cff;
+      --border:rgba(255,255,255,0.08);
+      --danger:#ef4444;
+      --ok:#22c55e;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background: radial-gradient(900px 600px at 25% 5%, rgba(79,124,255,0.25), transparent 60%),
+                  radial-gradient(900px 600px at 85% 20%, rgba(34,197,94,0.18), transparent 55%),
+                  var(--bg);
+      min-height:100vh;
+      padding:24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .container{
+        width:min(720px, 100%);
+        display:flex;
+        justify-content:center;
+    }
+    
+    @media (max-width: 900px){
+      .container{grid-template-columns:1fr}
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+    }
+    h1{
+      margin:0 0 6px 0;
+      font-size: 24px;
+    }
+    p{
+      margin:0 0 14px 0;
+      color: var(--muted);
+      line-height:1.5;
+      font-size:14px;
+    }
+    form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top:10px;
+    }
+    @media (max-width: 520px){
+      form{grid-template-columns:1fr}
+    }
+    label{
+      font-size:12px;
+      color: rgba(232,238,252,0.75);
+      margin-bottom:6px;
+      display:block;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+    }
+    input, select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,0.18);
+      color: var(--text);
+      outline:none;
+    }
+        /* Improve dropdown list contrast */
+    select{
+      background: rgba(0,0,0,0.30);
+      color: var(--text);
+      color-scheme: dark;   /* helps on Windows/Chrome */
+    }
+
+    select option{
+      background: #0b1220;  /* solid dark background for the dropdown list */
+      color: #e8eefc;       /* bright text */
+    }
+
+    /* Make the placeholder "Select" a bit muted */
+    select option[disabled]{
+      color: #a9b6d6;
+    }
+
+    input::placeholder{color: rgba(232,238,252,0.35);}
+    input:focus, select:focus{
+      border-color: rgba(79,124,255,0.5);
+      box-shadow: 0 0 0 4px rgba(79,124,255,0.12);
+    }
+    .full{grid-column: 1 / -1;}
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-start;
+      margin-top:4px;
+    }
+    button{
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(90deg, var(--accent), #6d5cff);
+      color:white;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .12s ease, filter .12s ease;
+    }
+    button:hover{transform: translateY(-1px); filter: brightness(1.05);}
+    .link{
+      color: var(--muted);
+      text-decoration:none;
+      border:1px solid var(--border);
+      padding:10px 14px;
+      border-radius:12px;
+      display:inline-block;
+    }
+    .result{
+      margin-top:14px;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,0.12);
+    }
+    .result h2{
+      margin:0 0 6px 0;
+      font-size:16px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,0.14);
+      color: var(--muted);
+      font-size:12px;
+    }
+    .badge i{
+      width:8px;height:8px;border-radius:50%;
+      background: var(--ok);
+      display:inline-block;
+      box-shadow:0 0 0 4px rgba(34,197,94,0.14);
+    }
+    .note{
+      margin-top:12px;
+      font-size:12px;
+      color: rgba(232,238,252,0.60);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="card">
+      <h1>Predict Student Score</h1>
+      <p>Fill the details below and submit to get a predicted score.</p>
+
+      <!-- IMPORTANT: action and name attributes match your app.py request.form.get(...) -->
+      <form action="/predictdata" method="POST">
+        <div class="field">
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender" required>
+            <option value="" disabled selected>Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="race_ethnicity">Race / Ethnicity</label>
+          <select id="race_ethnicity" name="race_ethnicity" required>
+            <option value="" disabled selected>Select</option>
+            <option value="group A">Group A</option>
+            <option value="group B">Group B</option>
+            <option value="group C">Group C</option>
+            <option value="group D">Group D</option>
+            <option value="group E">Group E</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="parental_level_of_education">Parental Level of Education</label>
+          <!-- Keeping the typo in the name to match app.py: parental_level_of_education -->
+          <select id="parental_level_of_education" name="parental_level_of_education" required>
+            <option value="" disabled selected>Select</option>
+            <option value="some high school">Some high school</option>
+            <option value="high school">High school</option>
+            <option value="some college">Some college</option>
+            <option value="associate's degree">Associate's degree</option>
+            <option value="bachelor's degree">Bachelor's degree</option>
+            <option value="master's degree">Master's degree</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="lunch">Lunch</label>
+          <select id="lunch" name="lunch" required>
+            <option value="" disabled selected>Select</option>
+            <option value="standard">Standard</option>
+            <option value="free/reduced">Free / Reduced</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="test_preparation_course">Test Preparation Course</label>
+          <select id="test_preparation_course" name="test_preparation_course" required>
+            <option value="" disabled selected>Select</option>
+            <option value="none">None</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="reading_score">Reading Score</label>
+          <input
+            id="reading_score"
+            name="reading_score"
+            type="number"
+            min="0"
+            max="100"
+            step="1"
+            placeholder="e.g., 72"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="writing_score">Writing Score</label>
+          <input
+            id="writing_score"
+            name="writing_score"
+            type="number"
+            min="0"
+            max="100"
+            step="1"
+            placeholder="e.g., 68"
+            required
+          />
+        </div>
+
+        <div class="full actions">
+          <button type="submit">Predict Score</button>
+          <a class="link" href="/">Back to Landing</a>
+        </div>
+      </form>
+
+      {% if results is not none %}
+      <div class="result">
+        <div class="badge"><i></i> Prediction Ready</div>
+        <h2 style="margin-top:10px;">Predicted Score</h2>
+        <p style="font-size:28px; margin:0; color: var(--text); font-weight:800;">
+          {{ results }}
+        </p>
+        <p class="note">This value is generated by your trained model (model.pkl) after preprocessing.</p>
+      </div>
+      {% endif %}
+    </section>
+  </div>
+</body>
+</html>

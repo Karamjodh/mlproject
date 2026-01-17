@@ -188,6 +188,7 @@ Educational/portfolio use. Add a LICENSE file if open-sourcing.
 ## Author
 
 Karamjodh Singh
+
 GitHub: <https://github.com/Karamjodh>
 
 LinkedIn: <https://www.linkedin.com/in/karamjodh-singh/>

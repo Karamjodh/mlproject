@@ -1,17 +1,17 @@
-### Student Score Prediction Web App (Flask + Machine Learning)
+## Student Score Prediction Web App (Flask + Machine Learning)
 
 A resume-ready end-to-end Machine Learning project that predicts a student’s score using demographic + academic inputs, served through a Flask web application using a trained model and preprocessing pipeline.
 
 ---
 
-## Overview
+### Overview
 
 This project predicts a student’s score based on inputs such as gender, race/ethnicity, parental education level, lunch type, test preparation status, reading score, and writing score.  
 It uses a saved **preprocessor** and **trained model** for inference and displays the predicted score on the web UI.
 
 ---
 
-## Features
+### Features
 
 - Flask web app with clean UI (HTML templates)
 - ML prediction using saved artifacts:
@@ -23,7 +23,7 @@ It uses a saved **preprocessor** and **trained model** for inference and display
 
 ---
 
-## Tech Stack
+### Tech Stack
 
 - Python
 - Flask
@@ -34,7 +34,7 @@ It uses a saved **preprocessor** and **trained model** for inference and display
 
 ---
 
-## Project Structure
+### Project Structure
 
 ```text
 ML-Project/
@@ -59,7 +59,7 @@ ML-Project/
 ```
 ---
 
-## Routes
+### Routes
 
 | Route | Method | Purpose |
 |------|--------|---------|
@@ -69,7 +69,7 @@ ML-Project/
 
 ---
 
-## Inputs
+### Inputs
 
 The UI collects these fields:
 
@@ -83,21 +83,21 @@ The UI collects these fields:
 
 ---
 
-## Setup
+### Setup
 
-### 1) Clone the repository
+# 1) Clone the repository
 ```bash
 git clone <your-repo-url>
 cd ML-Project
 ```
 
-## 2) Create and activate a virtual environment (Windows)
+# 2) Create and activate a virtual environment (Windows)
 ```bash
     python -m venv venv
     venv\Scripts\activate
 ```
 
-## 3) Install dependencies
+# 3) Install dependencies
 ```bash
 pip install -r requirements.txt
 
@@ -109,7 +109,7 @@ http://127.0.0.1:5000/
 
 ---
 
-## Artifacts
+### Artifacts
 
 This app expects these files:
 
@@ -120,7 +120,7 @@ They are loaded using src/Utils.py -> load_object().
 
 ---
 
-## How It Works (Prediction Flow)
+### How It Works (Prediction Flow)
 
 1. User opens `/predictdata`
 2. User fills the form and submits (POST)
@@ -132,7 +132,7 @@ They are loaded using src/Utils.py -> load_object().
 
 ---
 
-## Notes for Deployment
+### Notes for Deployment
 
 - Ensure `artifact/` contains both `model.pkl` and `preprocessor.pkl`
 - Pin package versions in `requirements.txt` to avoid `.pkl` incompatibilities
@@ -140,7 +140,7 @@ They are loaded using src/Utils.py -> load_object().
 
 ---
 
-## Recommended `requirements.txt` (example)
+### Recommended `requirements.txt` (example)
 
 ```txt
 flask
@@ -152,7 +152,7 @@ dill
 
 ---
 
-## Common Issues & Fixes
+### Common Issues & Fixes
 
 # 1) Form key mismatch / CustomData argument error
 
@@ -173,22 +173,23 @@ Re-train and re-save model.pkl and preprocessor.pkl using your current environme
 
 ---
 
-## Resume Bullet
+### Resume Bullet
 
 Built an end-to-end Student Score Prediction web app using Flask + Scikit-learn, integrating preprocessing pipelines, artifact-based model inference, and a clean HTML UI for real-time predictions.
 
 ---
 
-## License
+### License
 
 Educational/portfolio use. Add a LICENSE file if open-sourcing.
 
 ---
 
-## Author
+### Author
 
 Karamjodh Singh
 GitHub: <https://github.com/Karamjodh>
+
 LinkedIn: <https://www.linkedin.com/in/karamjodh-singh/>
 
 ---
